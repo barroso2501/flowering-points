@@ -1,0 +1,10 @@
+classe_flor,contexto,n,frac_com_img,mediana_dias_mais_proxima
+amarelo,borda_estrada,14,0.5714285714285714,2.0
+amarelo,cerradao_savana,98,0.9081632653061225,1.0
+amarelo,mata_galeria,12,1.0,5.0
+amarelo,outro,1,1.0,0.0
+amarelo,pastagem,51,0.7843137254901961,1.0
+rosa,borda_estrada,22,0.9545454545454546,2.0
+rosa,cerradao_savana,218,0.981651376146789,2.0
+rosa,mata_galeria,2,1.0,0.0
+rosa,pastagem,63,0.9841269841269841,2.0
