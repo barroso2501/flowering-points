@@ -138,7 +138,82 @@ dias, contra a baseline de −90 a −65). Placebo diferente de zero indica que 
 Por evento: número de imagens limpas na janela e distância (em dias) até a
 imagem limpa mais próxima.
 
-## 5. Parâmetros
+## 5. Varredura por pixel nas AOIs (scripts 03 e 04)
+
+### Áreas de interesse
+
+As AOIs são polígonos desenhados durante a inspeção em torno de regiões com
+muitas copas floridas, das quais só algumas foram marcadas como ponto.
+- **Arquivos:** bruto em `data/raw/aois_poligonos.geojson` (17 polígonos);
+  versão normalizada em `data/aoi/aois_v1.geojson`.
+- **Campos normalizados:** `aoi_id`, data ISO, classes e `status`.
+- **Natureza dos recortes:** amplos, podendo conter um grande fragmento e sua
+  borda (predominantemente pastagem), ou vários fragmentos e matriz.
+
+Status:
+- **`apta_s2`** (7 AOIs, ~9.200 ha): AOI07–09 (amarelo e rosa, 08/09/2021),
+  AOI10 (rosa, 24/07/2021), AOI11 (rosa, 26/05/2019), AOI12 (amarelo,
+  02/09/2025), AOI16 (amarelo, 30/08/2024);
+- `lacuna_L2A_2017` (AOI00–04): dependem da D8;
+- `pre_sentinel` (AOI13–15, 2004 e 2013): fora;
+- `fora_escopo` (AOI05–06, palmeiras).
+
+### Pergunta
+
+Com a data conhecida, mas **sem saber onde estão as copas**, quantas manchas o
+método detecta por área, quantas delas são flor e quantas florações ele perde?
+
+### Cálculo por pixel (script 03)
+
+A mesma lógica do script 02 v1.1, aplicada a cada pixel:
+- **Contraste:** `c(t) = índice(t) − mediana do índice num anel de 40–80 m`
+  (kernel fixo em anel). Índice: IRS para rosa, NDYI para amarelo; nas AOIs
+  mistas, os dois.
+- **Ruído:** MAD das diferenças entre datas consecutivas (−90 a −30 dias,
+  exigindo 4 ou mais diferenças) × 1,4826 / √2.
+- **Pico e z_pico:** como no script 02, na data da AOI (evento) e em −50 dias
+  (placebo).
+- **Mosaico diário:** um mosaico por dia, para não duplicar datas onde dois
+  tiles se sobrepõem.
+- **Detecção:** `z_pico > 3`. Pixels detectados vizinhos (8-conectividade)
+  formam um **objeto**; exporta-se o centroide, o número de pixels e o z
+  máximo.
+
+### Métricas (script 04)
+
+- **Etapa 1:**
+  - objetos por 100 ha no evento e no placebo; o placebo é o **falso positivo
+    por área**;
+  - excesso evento − placebo;
+  - fração dos pontos já registrados (mesma data e cor) com z > 3 num raio de
+    15 m;
+  - amostra cega (30 detecções + 15 controles aleatórios por AOI × índice).
+- **Etapa 2:** precisão = fração de `sim` nas detecções da amostra cega; a taxa
+  de `sim` nos controles dá a base.
+- **Etapa 3:** com o censo das subparcelas,
+  - sensibilidade = fração das copas do censo com detecção a ≤ 20 m;
+  - precisão = fração das detecções a ≤ 20 m de uma copa do censo.
+
+### Subparcelas do censo
+
+- AOI10 e AOI11: AOI inteira.
+- AOI12: 3 quadrados de 500 m sorteados (300 candidatos, semente 42), um por
+  estrato de cobertura lenhosa natural (MapBiomas, classes 3, 4 e 6).
+  Estratos: fragmento (70% ou mais), borda (30–70%), matriz (menos de 30%).
+- O protocolo está em [`PROTOCOLO_CENSO.md`](PROTOCOLO_CENSO.md).
+
+### Limitações conhecidas
+
+- **Ruído nas AOIs de 2019:** a janela pré-floração da AOI11 (fev–mai) é
+  chuvosa; pode haver poucas datas limpas e ruído mal estimado.
+- **MapBiomas:** usa a Coleção 9, ano 2023, como referência para todas as AOIs.
+  O caminho da coleção mais recente deve ser verificado no catálogo.
+- **Objetos ≠ copas:** um objeto pode conter várias copas, e uma copa grande pode
+  gerar mais de um objeto se o z oscilar.
+- **Distância de casamento:** os 20 m entre o censo e a detecção são uma escolha
+  (erro de posição do GE mais o tamanho do pixel); não foram calibrados.
+
+## 6. Parâmetros
 
 | Parâmetro | Valor v1 | Onde |
 |---|---|---|
@@ -155,3 +230,9 @@ imagem limpa mais próxima.
 | `MIN_N_RUIDO` | 5 | script 02 (v1.1) |
 | `OMBRO_ANTES` / `OMBRO_DEPOIS` | (−30, −15) / (+20, +35) dias, relativos ao centro | script 02 (v1.1) |
 | `LIMIARES_Z` | 2 e 3 | script 02 (v1.1) |
+| `LIMIAR_Z` | 3 | scripts 03 e 04 |
+| `CENTRO_PLACEBO` | −50 dias | script 03 |
+| Anel por pixel | 4–8 pixels (40–80 m) | script 03 |
+| `LADO_SUBPARCELA` / `SEMENTE` | 500 m / 42 | script 03 |
+| `N_DETEC_AMOSTRA` / `N_CONTROLES` | 30 / 15 por AOI × índice | script 04 |
+| `DIST_MATCH` | 20 m | script 04 |

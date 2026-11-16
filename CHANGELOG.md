@@ -1,5 +1,29 @@
 # Changelog
 
+## v1.2 (2026-11-16)
+
+- **Dados:**
+  - `data/raw/aois_poligonos.geojson` (17 AOIs, original);
+  - `data/aoi/aois_v1.geojson` (normalizado: aoi_id, data ISO, classes,
+    status).
+- **Script 03 (GEE):**
+  - varredura por pixel nas 7 AOIs aptas: z_pico do evento e do placebo,
+    objetos detectados, z nos pontos registrados, rasters;
+  - sorteio estratificado das subparcelas do censo (KML).
+- **Script 04 (Python):**
+  - etapa 1: densidades evento × placebo, detecção dos pontos registrados,
+    amostra cega;
+  - etapa 2: precisão;
+  - etapa 3: sensibilidade e precisão com o censo.
+- **Docs:**
+  - novo `PROTOCOLO_CENSO.md`;
+  - `METODOS` seção 5;
+  - `DICIONARIO_DADOS` (AOIs, exportações, censo, resultados);
+  - `DECISOES` D6 atualizada, novas D9 e D10.
+- **Outros:** `requirements.txt` + shapely.
+- **Ainda sem resultados:** os scripts 03 e 04 foram testados só com dados
+  sintéticos (04) e verificação de sintaxe (03).
+
 ## v1.1 (2026-11-16)
 
 - **Script 02:**

@@ -88,3 +88,48 @@ Colunas acrescentadas em `detectabilidade_por_evento.csv` na v1.1:
 | z_rob, z_placebo_rob | Delta do evento e do placebo divididos por `ruido` |
 | pico, pico_placebo | Janela (±10 d) menos a média dos ombros; centrado em 0 e em −50 d |
 | z_pico, z_pico_placebo | `pico` e `pico_placebo` divididos por `ruido` |
+
+## `data/aoi/aois_v1.geojson`
+
+Normalização das 17 AOIs de `data/raw/aois_poligonos.geojson`. Geometria
+original.
+
+| Campo | Descrição |
+|---|---|
+| aoi_id | `AOI00`–`AOI16` (ordem do arquivo original) |
+| id_kml, nome_original | Identificador e nome do placemark no GE |
+| data_aoi | Primeira data da descrição, em ISO |
+| datas_todas | Todas as datas da descrição |
+| classes | amarelo, rosa, "amarelo,rosa", palmeira, indefinido |
+| status | apta_s2, lacuna_L2A_2017, pre_sentinel, fora_escopo |
+
+O campo original `pasta_origem` ("placas solares") foi descartado: é um rótulo
+de pasta reaproveitado no GE, não informação sobre as áreas.
+
+## Exportações do script 03 (`data/gee_exports/`)
+
+| Arquivo | Conteúdo |
+|---|---|
+| `aoi_deteccoes_v1.csv` | Um objeto detectado por linha: aoi_id, data_aoi, indice (IRS/NDYI), tipo (evento/placebo), lon, lat (centroide), z_max, n_pixels |
+| `aoi_resumo_v1.csv` | Por AOI × índice: área da AOI e áreas avaliáveis (ha, pixels com z calculado) no evento e no placebo; nº de datas |
+| `aoi_pontos_v1.csv` | Pontos a até 1 km da AOI: evento_id, data_evento, classe_flor, z_evento e z_placebo (máximo num raio de 15 m) |
+| `aoi_z_AOIxx.tif` | Raster EPSG:4326, 10 m: z_evento_IDX, z_placebo_IDX, ruido_IDX (AOI + 1 km) |
+| `subparcelas_censo_v1.kml` | Subparcelas do censo (mover para `data/aoi/`) |
+
+## Censo (`data/censo/censo_v1.kml`)
+
+Placemarks de ponto, um por copa florida. O nome indica a cor: `r` (rosa ou
+roxo), `a` (amarelo), `o` (outra); `?` = incerto; `+` = grupo. Ver
+`PROTOCOLO_CENSO.md`.
+
+## `results/aoi_v1/` (script 04)
+
+| Arquivo | Etapa | Conteúdo |
+|---|---|---|
+| `densidade_deteccoes.csv` | 1 | Objetos por 100 ha no evento e no placebo, razão e excesso |
+| `deteccao_pontos_registrados.csv` | 1 | Por AOI × índice: n de pontos da mesma data e cor, fração com z > 3 (evento e placebo) |
+| `validacao_amostra_cega.kml`, `validacao_template.csv` | 1 | Amostra para a validação visual |
+| `_chave_amostra_NAO_ABRIR.csv` | 1 | Tipo (detecção/controle) e z de cada código da amostra |
+| `precisao_validacao.csv`, `respostas_validacao.csv` | 2 | Precisão e taxa de flor nos controles |
+| `censo_sensibilidade_precisao.csv` | 3 | Por subparcela × índice: copas, detecções, sensibilidade, precisão |
+| `log_etapaN.json` | todas | Proveniência |

@@ -13,6 +13,10 @@ no Sentinel-2**.
 >
 > Ver [`docs/RESULTADOS_v1.1.md`](docs/RESULTADOS_v1.1.md) e o
 > [`CHANGELOG.md`](CHANGELOG.md).
+>
+> **Em andamento (v1.2):** varredura espacial às cegas nas áreas de interesse
+> (AOIs) e censo de subparcelas para medir precisão e sensibilidade. Ver
+> [`docs/PROTOCOLO_CENSO.md`](docs/PROTOCOLO_CENSO.md).
 
 ## Pergunta
 
@@ -30,25 +34,36 @@ A pergunta 1 foi respondida na v1. A pergunta 2 é o próximo passo.
 flowering-points/
 ├── README.md
 ├── data/
-│   ├── raw/                         # exportação original do GE/ArcGIS (não editar)
-│   │   └── ipes_ver2_revisado.csv
+│   ├── raw/                         # originais (não editar)
+│   │   ├── ipes_ver2_revisado.csv
+│   │   └── aois_poligonos.geojson
+│   ├── aoi/
+│   │   ├── aois_v1.geojson               # AOIs normalizadas (aoi_id, data, status)
+│   │   └── subparcelas_censo_v1.kml      # (gerado pelo script 03)
+│   ├── censo/
+│   │   └── censo_v1.kml                  # (a produzir: protocolo em docs/)
 │   ├── processed/
 │   │   ├── ipes_eventos_consolidados.csv   # 1 linha por evento de floração
 │   │   └── ipes_eventos_s2_input.csv       # subconjunto elegível para o S2
 │   └── gee_exports/
-│       └── ipes_s2_series_v1.csv           # séries S2 exportadas do GEE (versão congelada)
+│       ├── ipes_s2_series_v1.csv           # séries S2 por ponto (versão congelada)
+│       └── aoi_*_v1.*                      # exportações do script 03 (a produzir)
 ├── scripts/
 │   ├── 01_gee_extrair_series_s2.js   # GEE Code Editor
-│   └── 02_analisar_detectabilidade.py
+│   ├── 02_analisar_detectabilidade.py
+│   ├── 03_gee_varredura_aoi.js       # GEE: varredura por pixel nas AOIs + subparcelas
+│   └── 04_analisar_varredura.py      # etapas 1–3: densidade, precisão, sensibilidade
 ├── results/
 │   ├── v1/                           # saídas do script 02 v1
 │   ├── v1_exploratorio_janela5/      # janela ±5 d (post hoc)
-│   └── v1.1/                         # saídas do script 02 v1.1 (ruído robusto + pico)
+│   ├── v1.1/                         # saídas do script 02 v1.1 (ruído robusto + pico)
+│   └── aoi_v1/                       # saídas do script 04 (a produzir)
 └── docs/
     ├── METODOS.md
     ├── DICIONARIO_DADOS.md
     ├── RESULTADOS_v1.md
     ├── RESULTADOS_v1.1.md
+    ├── PROTOCOLO_CENSO.md            # validação cega e censo no GE
     └── DECISOES.md                   # registro de decisões e questões abertas
 ```
 
@@ -70,6 +85,15 @@ flowering-points/
    ```
    Saída em `resultados/` (mover para `results/vN/`), incluindo
    `log_execucao.json` com hashes das entradas, parâmetros e versões.
+
+### Varredura nas AOIs (v1.2)
+
+1. Rodar `scripts/03_gee_varredura_aoi.js` (as geometrias estão embutidas;
+   só ajustar `ASSET_PONTOS`). Disparar os exports e salvar os CSVs em
+   `data/gee_exports/` e o KML das subparcelas em `data/aoi/`.
+2. Etapa 1: `python scripts/04_analisar_varredura.py etapa1 --deteccoes ... --resumo ... --pontos ... --aois data/aoi/aois_v1.geojson`.
+3. Validação cega e censo no GE, conforme `docs/PROTOCOLO_CENSO.md`.
+4. Etapas 2 e 3 do script 04 (comandos no cabeçalho do script).
 
 ## Nível de reprodutibilidade
 

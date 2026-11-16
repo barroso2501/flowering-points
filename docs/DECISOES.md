@@ -64,6 +64,9 @@ Estado: **adotada**, **provisória** ou **aberta**.
   - exigir coerência de cor (B4 e B2 sobem, B3 não);
   - calibrar o limiar pela distribuição do placebo.
 - **Definir antes de montar o passo 2.**
+- **Atualização v1.2:** a varredura nas AOIs mede o falso positivo **por área**
+  (objetos por 100 ha no placebo), não por teste. Essa é a unidade relevante
+  para a varredura cega. A decisão sobre o limiar fica para depois da etapa 1.
 
 ## D7. Hipótese alternativa de desfolha (aberta)
 
@@ -84,3 +87,28 @@ Estado: **adotada**, **provisória** ou **aberta**.
     núcleo−anel é local, então o efeito atmosférico se cancela em boa parte [H],
     mas os índices absolutos mudam.
   - **Teste:** comparar L1C × L2A em 2019+.
+
+## D9. AOIs como áreas de teste da varredura espacial (adotada, v1.2)
+
+- **Justificativa:** são áreas com muitas copas floridas não marcadas e data
+  conhecida. Permitem testar a detecção às cegas no espaço, o passo
+  intermediário entre o teste por ponto e o histórico multianual.
+- **Ataques prováveis:**
+  - (a) as AOIs foram escolhidas por terem muita floração, então as taxas valem
+    para paisagens densas, não para a paisagem média;
+  - (b) sem censo, as detecções não marcadas não podem ser classificadas.
+- **Mitigações:**
+  - placebo temporal nos mesmos pixels, para o falso positivo;
+  - validação cega com controles aleatórios, para a precisão;
+  - censo de subparcelas sorteadas e estratificadas (fragmento, borda, matriz),
+    para a sensibilidade.
+- **Não resolvido:** generalização para fora das AOIs. Exigiria áreas sorteadas
+  sem critério de floração.
+
+## D10. Distância de casamento de 20 m entre censo e detecção (provisória)
+
+- **Justificativa:** soma aproximada do erro de posição do GE e do tamanho do
+  pixel/objeto.
+- **Ataque provável:** valor arbitrário; distâncias maiores inflam a
+  sensibilidade e a precisão.
+- **Ação:** reportar a sensibilidade a 10, 20 e 30 m quando houver censo.
