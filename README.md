@@ -14,9 +14,13 @@ no Sentinel-2**.
 > Ver [`docs/RESULTADOS_v1.1.md`](docs/RESULTADOS_v1.1.md) e o
 > [`CHANGELOG.md`](CHANGELOG.md).
 >
-> **Em andamento (v1.2):** varredura espacial às cegas nas áreas de interesse
-> (AOIs) e censo de subparcelas para medir precisão e sensibilidade. Ver
-> [`docs/PROTOCOLO_CENSO.md`](docs/PROTOCOLO_CENSO.md).
+> **Varredura nas AOIs (2026-11-16):**
+> - **Rosa:** detecta copas acima do acaso (sensibilidade de 48% contra 21% na
+>   AOI10), mas a regra por pixel gera ~1 falso positivo por hectare (precisão
+>   de 15%). A regra precisa ser revisada antes do histórico.
+> - **Amarelo:** sem sinal.
+>
+> Ver [`docs/RESULTADOS_aoi_v1.md`](docs/RESULTADOS_aoi_v1.md).
 
 ## Pergunta
 
@@ -63,6 +67,7 @@ flowering-points/
     ├── DICIONARIO_DADOS.md
     ├── RESULTADOS_v1.md
     ├── RESULTADOS_v1.1.md
+    ├── RESULTADOS_aoi_v1.md          # varredura nas AOIs + censo
     ├── PROTOCOLO_CENSO.md            # validação cega e censo no GE
     └── DECISOES.md                   # registro de decisões e questões abertas
 ```

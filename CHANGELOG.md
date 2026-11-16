@@ -1,5 +1,25 @@
 # Changelog
 
+## v1.3 (2026-11-16)
+
+- **Dados:**
+  - exportações do script 03 (`data/gee_exports/aoi_deteccoes_v1.csv`,
+    `aoi_resumo_v1.csv`, `aoi_pontos_v1.csv`);
+  - subparcelas sorteadas (`data/aoi/subparcelas_censo_v1.kml`);
+  - censo (`data/censo/censo_v1.kml`, `censo_v1_registro.csv`).
+- **Script 04 v1.1 (etapa 3):**
+  - lê o registro do censo e mantém as subparcelas sem copas;
+  - calcula sensibilidade e precisão também com as detecções do placebo (nível
+    do acaso) e em 10, 20 e 30 m;
+  - exporta a atribuição das copas às subparcelas
+    (`censo_copas_atribuidas.csv`).
+- **Resultados:** `results/aoi_v1/` (etapas 1 e 3) e
+  `docs/RESULTADOS_aoi_v1.md`.
+- **Docs:** `DECISOES` (D6 atualizada; novas D11, validação adiada, e D12,
+  amarelo); README.
+- **`.gitignore`:** `*.tif` (rasters ficam no Drive) e os arquivos da amostra
+  cega.
+
 ## v1.2.1 (2026-11-16)
 
 - **Script 03:** asset do MapBiomas atualizado para a Coleção 11

@@ -64,6 +64,10 @@ Estado: **adotada**, **provisória** ou **aberta**.
   - exigir coerência de cor (B4 e B2 sobem, B3 não);
   - calibrar o limiar pela distribuição do placebo.
 - **Definir antes de montar o passo 2.**
+- **Atualização 2026-11-16 (resultados das AOIs):** z > 3 por pixel gera
+  ~100–160 objetos espúrios por 100 ha. Na AOI10 (rosa), a precisão no censo é
+  de 15%, contra uma sensibilidade de 48% (acaso: 21%). A regra precisa ser
+  revisada antes do histórico. Ver `RESULTADOS_aoi_v1.md`, seção 5.
 - **Atualização v1.2:** a varredura nas AOIs mede o falso positivo **por área**
   (objetos por 100 ha no placebo), não por teste. Essa é a unidade relevante
   para a varredura cega. A decisão sobre o limiar fica para depois da etapa 1.
@@ -112,3 +116,22 @@ Estado: **adotada**, **provisória** ou **aberta**.
 - **Ataque provável:** valor arbitrário; distâncias maiores inflam a
   sensibilidade e a precisão.
 - **Ação:** reportar a sensibilidade a 10, 20 e 30 m quando houver censo.
+
+## D11. Validação cega adiada (adotada, 2026-11-16)
+
+- **Motivo:** a etapa 1 mostrou densidade de falsos positivos (placebo) da
+  mesma ordem das detecções do evento. Com a regra atual (z > 3 por pixel), a
+  validação cega só confirmaria uma precisão baixa, já medida no censo da AOI10
+  (15%), ao custo de ~450 pontos.
+- **Ação:** refazer a validação cega depois de revisar a regra de detecção.
+- **Sigilo:** a amostra e a chave geradas na etapa 1 ficam fora do repositório
+  até lá.
+
+## D12. Amarelo fora do escopo da detecção por Sentinel-2 (provisória)
+
+- **Evidência:** pontos (v1.1: ~10% com z > 2), varredura (evento ≤ placebo na
+  AOI12) e censo (sensibilidade ≤ acaso).
+- **Proposta:** concentrar a regra de detecção e o histórico no rosa. O amarelo
+  exigiria outra resolução (PlanetScope ou imagens de alta resolução).
+- **Ataque provável:** o NDYI pode ser um índice ruim, não o amarelo
+  indetectável. Não foram testados índices alternativos.

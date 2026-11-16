@@ -16,8 +16,12 @@ que podem ser rodadas em momentos diferentes:
       densidade de base de copas floridas).
 
   ETAPA 3 (depois do censo das subparcelas):
-    - sensibilidade (recall) = fração das copas do censo com detecção a ≤ DIST_MATCH m;
-    - precisão dentro das subparcelas.
+    - sensibilidade (recall) = fração das copas do censo com detecção a ≤ d m;
+    - precisão dentro das subparcelas;
+    - as mesmas métricas com as detecções do PLACEBO: é o nível do acaso
+      (quanto uma detecção aleatória, na mesma densidade, "acerta" copas);
+    - d = 10, 20 e 30 m (sensibilidade à distância de casamento, D10).
+    Subparcelas sem copas e sem detecções são mantidas (resultado válido).
 
 Uso:
   Etapa 1:
@@ -34,7 +38,8 @@ Uso:
     python scripts/04_analisar_varredura.py etapa3 \
         --deteccoes data/gee_exports/aoi_deteccoes_v1.csv \
         --subparcelas data/aoi/subparcelas_censo_v1.kml \
-        --censo data/censo/censo_v1.kml
+        --censo data/censo/censo_v1.kml \
+        --registro data/censo/censo_v1_registro.csv
 
 Saídas em results/aoi_v1/. Requisitos: pandas, numpy, shapely.
 """
@@ -45,12 +50,13 @@ import numpy as np
 import pandas as pd
 from shapely.geometry import shape, Point, Polygon
 
-VERSAO = "1.0"
+VERSAO = "1.1"
 SAIDA = Path("results/aoi_v1")
 LIMIAR_Z = 3            # o mesmo do script 03
 N_DETEC_AMOSTRA = 30    # detecções do evento por AOI × índice na amostra cega
 N_CONTROLES = 15        # pontos aleatórios por AOI × índice na amostra cega
-DIST_MATCH = 20         # m: distância máxima entre copa do censo e detecção
+DIST_MATCH = 20         # m: distância principal entre copa do censo e detecção
+DISTANCIAS = (10, 20, 30)  # m: sensibilidade da métrica à distância (D10)
 SEMENTE = 42
 COR_DO_INDICE = {"IRS": "rosa", "NDYI": "amarelo"}
 
@@ -215,48 +221,81 @@ def etapa2(a):
 
 
 # ------------------------------ ETAPA 3 -------------------------------------
+def _casar(c, d, dist):
+    """Para copas c e detecções d: quais copas têm detecção a <= dist m e quais
+    detecções têm copa a <= dist m."""
+    if len(c) == 0 or len(d) == 0:
+        return np.zeros(len(c), bool), np.zeros(len(d), bool)
+    D = dist_m(c.lon.values[:, None], c.lat.values[:, None],
+               d.lon.values[None, :], d.lat.values[None, :])
+    return (D <= dist).any(axis=1), (D <= dist).any(axis=0)
+
+
 def etapa3(a):
-    det = pd.read_csv(a.deteccoes)
-    det = det[det.tipo == "evento"]
-    subs = [s for s in ler_kml(a.subparcelas) if s["geom"] is not None]
+    det_all = pd.read_csv(a.deteccoes)
+    subs = [s for s in ler_kml(a.subparcelas) if s["geom"] is not None
+            and not isinstance(s["geom"], Point)]
     copas = [c for c in ler_kml(a.censo) if isinstance(c["geom"], Point)]
-    # Cor da copa pelo nome do placemark: começa com "r" (rosa) ou "a" (amarelo);
-    # "?" no nome marca incerteza.
+    reg = pd.read_csv(a.registro) if a.registro else None
+    # Cor da copa pelo nome: "r" (rosa) ou "a" (amarelo); "?" = incerta
+    # (fora do cálculo principal); "+" = grupo (conta como uma copa).
     cz = pd.DataFrame([dict(lon=c["geom"].x, lat=c["geom"].y, nome=c["nome"]) for c in copas])
-    cz["cor"] = np.where(cz.nome.str.lower().str.startswith("r"), "rosa",
-                np.where(cz.nome.str.lower().str.startswith("a"), "amarelo", "outra"))
-    cz["incerta"] = cz.nome.str.contains(r"\?")
+    nm = cz.nome.str.strip().str.lower()
+    cz["cor"] = np.where(nm.str.startswith("r"), "rosa",
+                np.where(nm.str.startswith("a"), "amarelo", "outra"))
+    cz["incerta"] = nm.str.contains(r"\?")
+    cz["subparcela"] = "FORA"
+    for s in subs:
+        nome = s["dados"].get("subparcela", s["nome"])
+        dentro = [s["geom"].contains(Point(x, y)) for x, y in zip(cz.lon, cz.lat)]
+        cz.loc[dentro, "subparcela"] = nome
+    cz.to_csv(SAIDA / "censo_copas_atribuidas.csv", index=False)
+
     linhas = []
     for s in subs:
         nome = s["dados"].get("subparcela", s["nome"])
         aoi_id = s["dados"].get("aoi_id", nome.split("_")[0])
         pol = s["geom"]
-        dentro_c = cz[[pol.contains(Point(x, y)) for x, y in zip(cz.lon, cz.lat)]]
+        area_ha = abs(_area_ha(pol))
+        cs = cz[cz.subparcela == nome]
         for idx, cor in COR_DO_INDICE.items():
-            d = det[(det.aoi_id == aoi_id) & (det.indice == idx)]
-            d = d[[pol.contains(Point(x, y)) for x, y in zip(d.lon, d.lat)]]
-            c = dentro_c[(dentro_c.cor == cor) & ~dentro_c.incerta]
-            if len(d) == 0 and len(c) == 0:
-                continue
-            # Copa detectada = existe detecção a <= DIST_MATCH m.
-            if len(c) and len(d):
-                D = dist_m(c.lon.values[:, None], c.lat.values[:, None],
-                           d.lon.values[None, :], d.lat.values[None, :])
-                copa_det = (D <= DIST_MATCH).any(axis=1)
-                det_ok = (D <= DIST_MATCH).any(axis=0)
-            else:
-                copa_det = np.zeros(len(c), bool); det_ok = np.zeros(len(d), bool)
-            linhas.append(dict(subparcela=nome, aoi_id=aoi_id, indice=idx,
-                               estrato=s["dados"].get("estrato", ""),
-                               n_copas_censo=len(c), n_deteccoes=len(d),
-                               sensibilidade=copa_det.mean() if len(c) else np.nan,
-                               precisao=det_ok.mean() if len(d) else np.nan,
-                               n_copas_incertas=int((dentro_c.cor == cor).sum() - len(c))))
+            dd = det_all[(det_all.aoi_id == aoi_id) & (det_all.indice == idx)]
+            if len(dd) == 0 and not ((det_all.aoi_id == aoi_id) & (det_all.indice == idx)).any():
+                # índice não varrido nesta AOI (ex.: NDYI na AOI10)
+                if len(cs[cs.cor == cor]) == 0:
+                    continue
+            dd = dd[[pol.contains(Point(x, y)) for x, y in zip(dd.lon, dd.lat)]]
+            c = cs[(cs.cor == cor) & ~cs.incerta]
+            for tipo in ("evento", "placebo"):
+                d = dd[dd.tipo == tipo]
+                for dist in DISTANCIAS:
+                    copa_det, det_ok = _casar(c, d, dist)
+                    linhas.append(dict(
+                        subparcela=nome, aoi_id=aoi_id, estrato=s["dados"].get("estrato", ""),
+                        indice=idx, tipo_deteccao=tipo, dist_m=dist, area_ha=area_ha,
+                        n_copas_censo=len(c),
+                        n_copas_incertas=int(((cs.cor == cor) & cs.incerta).sum()),
+                        n_deteccoes=len(d),
+                        deteccoes_100ha=100 * len(d) / area_ha,
+                        sensibilidade=copa_det.mean() if len(c) else np.nan,
+                        precisao=det_ok.mean() if len(d) else np.nan))
     out = pd.DataFrame(linhas)
+    if reg is not None:
+        out = out.merge(reg[["subparcela", "data_imagem", "minutos"]], on="subparcela", how="left")
     out.to_csv(SAIDA / "censo_sensibilidade_precisao.csv", index=False)
     registrar_log("etapa3", dict(deteccoes=a.deteccoes, subparcelas=a.subparcelas,
-                                 censo=a.censo))
-    print(out.round(2).to_string(index=False))
+                                 censo=a.censo, registro=a.registro),
+                  dict(n_copas_total=len(cz), n_copas_fora=int((cz.subparcela == "FORA").sum())))
+    print(cz.groupby(["subparcela", "cor", "incerta"]).size().to_string()); print()
+    print(out[out.dist_m == DIST_MATCH].round(2).to_string(index=False))
+
+
+def _area_ha(pol):
+    """Área geodésica aproximada (ha) de um polígono em graus."""
+    lat0 = np.radians(pol.centroid.y)
+    x, y = np.array(pol.exterior.coords).T
+    X = np.radians(x) * 6371000 * np.cos(lat0); Y = np.radians(y) * 6371000
+    return 0.5 * np.sum(X[:-1] * Y[1:] - X[1:] * Y[:-1]) / 1e4
 
 
 def main():
@@ -271,6 +310,8 @@ def main():
     e3 = sp.add_parser("etapa3")
     for k in ("deteccoes", "subparcelas", "censo"):
         e3.add_argument(f"--{k}", required=True)
+    e3.add_argument("--registro", required=False,
+                    help="data/censo/censo_v1_registro.csv (tempo por subparcela)")
     a = p.parse_args()
     SAIDA.mkdir(parents=True, exist_ok=True)
     {"etapa1": etapa1, "etapa2": etapa2, "etapa3": etapa3}[a.etapa](a)

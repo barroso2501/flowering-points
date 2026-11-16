@@ -1,0 +1,34 @@
+{
+  "versao_script": "1.1",
+  "etapa": "etapa3",
+  "entradas": {
+    "deteccoes": {
+      "caminho": "data/gee_exports/aoi_deteccoes_v1.csv",
+      "md5": "1c9c02a4eb633a4d8fce2dbe9db4c326"
+    },
+    "subparcelas": {
+      "caminho": "data/aoi/subparcelas_censo_v1.kml",
+      "md5": "fad4d0ba8713a0ae66b76b6afa65a682"
+    },
+    "censo": {
+      "caminho": "data/censo/censo_v1.kml",
+      "md5": "a156895d315d6b3d3a35d49f00340ba1"
+    },
+    "registro": {
+      "caminho": "data/censo/censo_v1_registro.csv",
+      "md5": "e81b4b619108d0dc6d1caffc4b88304a"
+    }
+  },
+  "parametros": {
+    "LIMIAR_Z": 3,
+    "N_DETEC_AMOSTRA": 30,
+    "N_CONTROLES": 15,
+    "DIST_MATCH": 20,
+    "SEMENTE": 42
+  },
+  "python": "3.13.18",
+  "pandas": "3.0.5",
+  "numpy": "2.5.3",
+  "n_copas_total": 247,
+  "n_copas_fora": 30
+}

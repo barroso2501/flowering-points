@@ -1,0 +1,33 @@
+{
+  "versao_script": "1.1",
+  "etapa": "etapa1",
+  "entradas": {
+    "deteccoes": {
+      "caminho": "data/gee_exports/aoi_deteccoes_v1.csv",
+      "md5": "1c9c02a4eb633a4d8fce2dbe9db4c326"
+    },
+    "resumo": {
+      "caminho": "data/gee_exports/aoi_resumo_v1.csv",
+      "md5": "3d805577a7e38fdf3789c1952aa58c16"
+    },
+    "pontos": {
+      "caminho": "data/gee_exports/aoi_pontos_v1.csv",
+      "md5": "e0c64588d111216aadb30ab0a8470900"
+    },
+    "aois": {
+      "caminho": "data/aoi/aois_v1.geojson",
+      "md5": "bbe4419582aa2dd63f8eefbfa7088cc2"
+    }
+  },
+  "parametros": {
+    "LIMIAR_Z": 3,
+    "N_DETEC_AMOSTRA": 30,
+    "N_CONTROLES": 15,
+    "DIST_MATCH": 20,
+    "SEMENTE": 42
+  },
+  "python": "3.13.18",
+  "pandas": "3.0.5",
+  "numpy": "2.5.3",
+  "n_amostra": 405
+}
