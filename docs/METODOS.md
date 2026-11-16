@@ -206,8 +206,9 @@ A mesma lógica do script 02 v1.1, aplicada a cada pixel:
 
 - **Ruído nas AOIs de 2019:** a janela pré-floração da AOI11 (fev–mai) é
   chuvosa; pode haver poucas datas limpas e ruído mal estimado.
-- **MapBiomas:** usa a Coleção 9, ano 2023, como referência para todas as AOIs.
-  O caminho da coleção mais recente deve ser verificado no catálogo.
+- **MapBiomas:** Coleção 11 (`mapbiomas_brazil_collection11_coverage_v3`), ano
+  mais recente do asset, como referência para todas as AOIs. A AOI12 é de 2025;
+  as outras AOIs não entram no sorteio.
 - **Objetos ≠ copas:** um objeto pode conter várias copas, e uma copa grande pode
   gerar mais de um objeto se o z oscilar.
 - **Distância de casamento:** os 20 m entre o censo e a detecção são uma escolha

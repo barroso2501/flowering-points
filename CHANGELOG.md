@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.2.1 (2026-11-16)
+
+- **Script 03:** asset do MapBiomas atualizado para a Coleção 11
+  (`projects/mapbiomas-public/assets/brazil/lulc/collection11/mapbiomas_brazil_collection11_coverage_v3`).
+  A banda passa a ser escolhida automaticamente (ano mais recente, impresso no
+  console), com a opção de fixar o ano em `MAPBIOMAS_BANDA`.
+- **Docs:** `METODOS` (limitações da seção 5).
+
 ## v1.2 (2026-11-16)
 
 - **Dados:**

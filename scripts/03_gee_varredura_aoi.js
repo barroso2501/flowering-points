@@ -34,10 +34,11 @@ var BUFFER_PONTOS = 1000;  // m: região extra para avaliar pontos perto da AOI
 // Subparcelas do censo
 var LADO_SUBPARCELA = 500; // m (25 ha)
 var SEMENTE = 42;          // semente fixa: o sorteio é reproduzível
-// MapBiomas (estratificação das subparcelas). VERIFICAR o caminho da coleção
-// mais recente no catálogo; aqui está a Coleção 9 (ano 2023 como referência).
-var MAPBIOMAS = 'projects/mapbiomas-public/assets/brazil/lulc/collection9/mapbiomas_collection90_integration_v1';
-var MAPBIOMAS_BANDA = 'classification_2023';
+// MapBiomas (estratificação das subparcelas): Coleção 11, cobertura.
+// MAPBIOMAS_BANDA = null usa o ano mais recente disponível no asset (a banda
+// escolhida é impressa no console). Para fixar um ano: 'classification_2024'.
+var MAPBIOMAS = 'projects/mapbiomas-public/assets/brazil/lulc/collection11/mapbiomas_brazil_collection11_coverage_v3';
+var MAPBIOMAS_BANDA = null;
 var CLASSES_NATURAIS_LENHOSAS = [3, 4, 6];  // formação florestal, savânica, floresta alagável
 
 // --------------------------- AOIs aptas -------------------------------------
@@ -220,7 +221,11 @@ Export.table.toDrive({collection: amostrasPontos, description: 'aoi_pontos_v1',
 // AOI10 e AOI11 (~60 ha): censo da AOI inteira.
 // AOI12 (8.561 ha): 3 quadrados de 500 m sorteados, um por estrato de cobertura
 // lenhosa natural (MapBiomas): fragmento (>=70%), borda (30–70%), matriz (<30%).
-var mb = ee.Image(MAPBIOMAS).select(MAPBIOMAS_BANDA);
+var mbTodas = ee.Image(MAPBIOMAS);
+var bandaMB = MAPBIOMAS_BANDA ? ee.String(MAPBIOMAS_BANDA)
+                             : ee.String(mbTodas.bandNames().sort().get(-1));
+print('MapBiomas: banda usada na estratificação', bandaMB);
+var mb = mbTodas.select([bandaMB]);
 var lenhosa = mb.remap(CLASSES_NATURAIS_LENHOSAS,
   CLASSES_NATURAIS_LENHOSAS.map(function () { return 1; }), 0).rename('lenhosa');
 
