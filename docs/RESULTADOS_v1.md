@@ -1,5 +1,10 @@
 # Resultados v1: detectabilidade no Sentinel-2
 
+> **Revisado na v1.1:** o z e o placebo desta versão usam um desvio-padrão
+> subestimado (baseline curta), e as taxas de falso positivo abaixo estão
+> infladas. Ver [`RESULTADOS_v1.1.md`](RESULTADOS_v1.1.md). Os deltas e os
+> testes por cluster continuam válidos.
+
 **Execução:** 2026-11-15.
 
 **Entradas:**

@@ -5,10 +5,14 @@ visualmente em imagens de alta resolução (Google Earth) durante a inspeção d
 áreas em regeneração no Cerrado, e teste de **detectabilidade dessa floração
 no Sentinel-2**.
 
-> **Status (2026-11-15):** dados consolidados (v1) e primeiro teste de
-> detectabilidade concluído. Resultado principal: a floração **rosa** produz
-> sinal claro e transitório no Sentinel-2; a **amarela** produz sinal médio
-> real, porém fraco e de janela curta. Ver [`docs/RESULTADOS_v1.md`](docs/RESULTADOS_v1.md).
+> **Status (2026-11-16, v1.1):** teste de detectabilidade revisado, com ruído
+> robusto e métrica de pico.
+> - **Rosa:** com `z_pico > 3`, detecta 50% das florações conhecidas, com ~1%
+>   de falso positivo no placebo.
+> - **Amarelo:** sinal médio real, mas fraco no nível individual.
+>
+> Ver [`docs/RESULTADOS_v1.1.md`](docs/RESULTADOS_v1.1.md) e o
+> [`CHANGELOG.md`](CHANGELOG.md).
 
 ## Pergunta
 
@@ -37,11 +41,14 @@ flowering-points/
 │   ├── 01_gee_extrair_series_s2.js   # GEE Code Editor
 │   └── 02_analisar_detectabilidade.py
 ├── results/
-│   └── v1/                           # saídas do script 02 (tabelas, figuras, log)
+│   ├── v1/                           # saídas do script 02 v1
+│   ├── v1_exploratorio_janela5/      # janela ±5 d (post hoc)
+│   └── v1.1/                         # saídas do script 02 v1.1 (ruído robusto + pico)
 └── docs/
     ├── METODOS.md
     ├── DICIONARIO_DADOS.md
     ├── RESULTADOS_v1.md
+    ├── RESULTADOS_v1.1.md
     └── DECISOES.md                   # registro de decisões e questões abertas
 ```
 
@@ -85,6 +92,8 @@ pipeline e está descrita em `docs/METODOS.md`, mas não é reexecutável).
 - **Classe = cor da flor**, não espécie.
 - O sinal "rosa" ainda tem uma explicação alternativa não descartada:
   **desfolha** pré-floração (ver `docs/RESULTADOS_v1.md`, seção 5).
+- **Lacuna de 2017:** 98 eventos de 2017 ficam sem as métricas da v1.1, por
+  cobertura incompleta da coleção L2A (D8).
 - A janela de ±5 dias que melhora o sinal amarelo foi escolhida **após** ver os
   dados (exploratória).
 

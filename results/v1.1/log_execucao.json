@@ -1,0 +1,48 @@
+{
+  "versao_script": "1.1",
+  "entrada_eventos": "data/processed/ipes_eventos_s2_input.csv",
+  "md5_eventos": "be871cca28610115b376cb3ebf5a7f4f",
+  "entrada_series": "data/gee_exports/ipes_s2_series_v1.csv",
+  "md5_series": "5422ec5a2c1f1fadcde1f7eb36960e49",
+  "parametros": {
+    "JANELA_EVENTO": [
+      -10,
+      10
+    ],
+    "JANELA_BASE": [
+      -90,
+      -30
+    ],
+    "PLACEBO_EV": [
+      -60,
+      -40
+    ],
+    "PLACEBO_BASE": [
+      -90,
+      -65
+    ],
+    "OMBRO_ANTES": [
+      -30,
+      -15
+    ],
+    "OMBRO_DEPOIS": [
+      20,
+      35
+    ],
+    "JANELA_RUIDO": [
+      -90,
+      -30
+    ],
+    "MIN_LIMPO": 0.9,
+    "MIN_N_RUIDO": 5,
+    "INDICE": {
+      "amarelo": "NDYI",
+      "rosa": "IRS"
+    }
+  },
+  "python": "3.13.18",
+  "pandas": "3.0.5",
+  "numpy": "2.5.3",
+  "n_eventos": 481,
+  "n_eventos_com_img": 473
+}

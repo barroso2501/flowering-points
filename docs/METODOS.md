@@ -108,6 +108,24 @@ A mesma estatística é calculada numa "data falsa" pré-floração (−60 a −
 dias, contra a baseline de −90 a −65). Placebo diferente de zero indica que o
 "sinal" vem de sazonalidade ou ruído, não da flor.
 
+### Métricas adicionadas na v1.1
+
+- **Ruído robusto (`ruido`):** MAD das diferenças entre imagens consecutivas
+  de −90 a −30 dias, × 1,4826 / √2, exigindo 5 ou mais imagens. Remove
+  tendências lentas e resiste a valores extremos. É o mesmo para o evento e o
+  placebo.
+  - **Ressalva:** se o ruído for autocorrelacionado entre imagens próximas, o
+    estimador o subestima.
+- **`z_rob` e `z_placebo_rob`:** o delta (do evento ou do placebo) dividido pelo
+  `ruido`.
+- **Pico:** `pico = mediana[c, ±10 d] − ½·(mediana[c, −30 a −15 d] + mediana[c, +20 a +35 d])`.
+  Mede um aumento transitório; uma rampa lenta eleva os ombros e não gera pico.
+  - **Placebo:** as mesmas janelas centradas em −50 dias (`pico_placebo`).
+  - **`z_pico`** = `pico / ruido`.
+- **Taxas de detecção:** fração de eventos com z > 2 e z > 3, evento × placebo
+  (`resumo_deteccao.csv`). A taxa do placebo é a estimativa empírica de falso
+  positivo por teste.
+
 ### Inferência
 
 - **Unidade:** eventos do mesmo cluster não são independentes. O delta é
@@ -133,3 +151,7 @@ imagem limpa mais próxima.
 | `PLACEBO_EV` / `PLACEBO_BASE` | (−60, −40) / (−90, −65) dias | script 02 |
 | `MIN_LIMPO` | 0,9 | script 02 |
 | `MIN_N_BASE` | 3 | script 02 |
+| `JANELA_RUIDO` | (−90, −30) dias | script 02 (v1.1) |
+| `MIN_N_RUIDO` | 5 | script 02 (v1.1) |
+| `OMBRO_ANTES` / `OMBRO_DEPOIS` | (−30, −15) / (+20, +35) dias, relativos ao centro | script 02 (v1.1) |
+| `LIMIARES_Z` | 2 e 3 | script 02 (v1.1) |

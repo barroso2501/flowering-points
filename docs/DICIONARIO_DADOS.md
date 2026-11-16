@@ -75,5 +75,16 @@ Valores vazios = geometria totalmente mascarada naquela imagem.
 | `disponibilidade.csv` | Por classe × contexto: n, fração de eventos com imagem, mediana da distância até a imagem mais próxima |
 | `resumo_sinal.csv` | Por grupo e métrica: n de eventos e de clusters, mediana, fração de eventos positivos, p de Wilcoxon por cluster |
 | `curva_contraste.png` | Contraste núcleo−anel × dias (mediana e IQR em bins de 5 dias), por classe |
-| `delta_vs_placebo.png` | Histogramas do delta do evento e do placebo |
-| `log_execucao.json` | Hashes das entradas, parâmetros, versões |
+| `delta_vs_placebo.png` | (v1) Histogramas do delta do evento e do placebo |
+| `zpico_vs_placebo.png` | (v1.1) Histogramas de `z_pico` do evento e do placebo, com limiares 2 e 3 |
+| `resumo_deteccao.csv` | (v1.1) Por classe, métrica e limiar: n e fração acima do limiar, evento × placebo |
+| `log_execucao.json` | Hashes das entradas, parâmetros, versões (v1.1 inclui `versao_script`) |
+
+Colunas acrescentadas em `detectabilidade_por_evento.csv` na v1.1:
+
+| Coluna | Descrição |
+|---|---|
+| ruido | Ruído robusto do contraste (MAD das diferenças consecutivas, −90 a −30 d) |
+| z_rob, z_placebo_rob | Delta do evento e do placebo divididos por `ruido` |
+| pico, pico_placebo | Janela (±10 d) menos a média dos ombros; centrado em 0 e em −50 d |
+| z_pico, z_pico_placebo | `pico` e `pico_placebo` divididos por `ruido` |
