@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "Se usar estes dados ou scripts, cite como abaixo."
+title: "flowering-points: copas floridas de ipês rotuladas no Cerrado e testes de detectabilidade no Sentinel-2"
+version: "2.0"
+date-released: "2026-11-16"
+authors:
+  - family-names: "Barroso Ramos Neto"
+    given-names: "Mario"
+repository-code: "https://github.com/barroso2501/flowering-points"
+license: "A-DEFINIR"

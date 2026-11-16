@@ -135,3 +135,41 @@ Estado: **adotada**, **provisória** ou **aberta**.
   exigiria outra resolução (PlanetScope ou imagens de alta resolução).
 - **Ataque provável:** o NDYI pode ser um índice ruim, não o amarelo
   indetectável. Não foram testados índices alternativos.
+- **Atualização no congelamento (2026-11-16):** mesmo com a posição conhecida,
+  a detecção individual do amarelo fica perto do acaso. Hipóteses abertas, não
+  testadas:
+  - (a) detecção na escala de população, somando dezenas de copas por data;
+  - (b) janela de floração curta demais para a revisita de 5 dias
+    (PlanetScope diário atacaria isso);
+  - (c) outros índices (borda do vermelho, NIR), que separem flor de capim
+    seco.
+
+## D13. Objetivo: acompanhar copas conhecidas, não descobrir copas (adotada no congelamento, 2026-11-16)
+
+- **Evidência:** `RESULTADOS_aoi_v1.1.md`.
+  - Nas copas do censo, a detecção fica 4–5× acima do placebo.
+  - Por pixel, evento e placebo são indistinguíveis na área de teste.
+  - A precisão máxima da varredura cega é ≤ 26%, em qualquer limiar.
+- **Consequência:** o uso viável é o histórico de floração de copas **rosas** de
+  posição conhecida (pontos da inspeção e do censo). Mapear copas novas exigiria
+  critérios adicionais ou outra resolução.
+- **Ataques prováveis:**
+  - (a) baseado em uma área de teste (AOI10, 200 ha, 57 copas) e numa única
+    data;
+  - (b) a regra de pixel testada é só z_pico; critérios espectrais e de forma
+    não foram testados;
+  - (c) parte das copas de teste coincide com pontos usados no teste por ponto.
+
+## Estado no congelamento (2026-11-16)
+
+| Decisão | Estado |
+|---|---|
+| D1–D4, D9 | adotadas |
+| D5 (janela ±5 d) | aberta: confirmar em dados independentes |
+| D6 (critério de detecção) | resolvida para copas conhecidas (z_pico > 3, ruído robusto); sem solução para varredura cega |
+| D7 (desfolha) | aberta: inspecionar copas com rampa (73_1, 443_1, 77_1) |
+| D8 (cobertura 2017–2018) | aberta: extrair L1C |
+| D10 (20 m) | provisória: sensibilidade reportada a 10/20/30 m |
+| D11 (validação cega) | adiada indefinidamente: só faz sentido com uma regra nova |
+| D12 (amarelo) | provisória: fora do escopo individual |
+| D13 (acompanhar, não descobrir) | adotada |

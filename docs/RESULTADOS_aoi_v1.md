@@ -51,11 +51,14 @@ Contagens:
 | AOI10 inteira (rosa) | 29 | 0 | 20 |
 | AOI11 inteira (rosa) | 6 | 8 | 15 |
 | AOI12 fragmento | 14 | 5 | 25 |
-| AOI12 borda | 132 | 22 | 5 (?) |
-| AOI12 matriz | **0** | 0 | 30 |
+| AOI12 borda | 132 | 22 | 30 |
+| AOI12 matriz | **0** | 0 | 5 |
 
 Copas marcadas **fora** das subparcelas: 30 rosas, ao norte da AOI10, até ~700 m.
-Não entram no cálculo da etapa 3.
+O censo da AOI10 seguiu o limite do fragmento inteiro, não só da AOI, com busca
+completa. Essas copas não entram na etapa 3, mas formam um conjunto
+independente para testar a regra revisada. Falta o polígono da área percorrida
+para medir os falsos positivos ali.
 
 Sensibilidade e precisão (distância de casamento de 20 m), evento × placebo
 (o placebo dá o nível do acaso):
@@ -108,7 +111,9 @@ estão dentro da área do raster (AOI + 1 km).
 
 ## 6. Pendências de dados
 
-- **Registro do censo:** a borda (154 copas) aparece com 5 min, e a matriz (0
-  copas) com 30 min. Confirmar se os tempos não estão trocados.
-- **As 30 copas fora da AOI10:** confirmar se foram marcadas de propósito, como
-  extensão do censo, e se a busca ali foi exaustiva.
+- ~~Tempos do registro trocados~~: corrigido em 2026-11-16 (borda 30 min,
+  matriz 5 min).
+- ~~Copas fora da AOI10~~: confirmado em 2026-11-16 que a busca cobriu o
+  fragmento inteiro, de forma completa.
+- **Falta:** o polígono da área efetivamente percorrida ao norte da AOI10
+  (limite do fragmento), para o teste independente.

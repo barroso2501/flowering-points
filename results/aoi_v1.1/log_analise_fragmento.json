@@ -1,0 +1,35 @@
+{
+  "entradas": {
+    "raster": {
+      "caminho": "data/gee_exports/aoi_z_AOI10.tif",
+      "md5": "bc4c7576e1dfa009d3e8d10f86325587"
+    },
+    "registros": {
+      "caminho": "data/release_v1/registros_floracao_v1.csv",
+      "md5": "d319d5d7c46d699b6d00b716396a98db"
+    },
+    "aois": {
+      "caminho": "data/aoi/aois_v1.geojson",
+      "md5": "bbe4419582aa2dd63f8eefbfa7088cc2"
+    },
+    "fragmento": {
+      "caminho": "data/censo/area_percorrida_AOI10_fragmento.geojson",
+      "md5": "981ac728a4ca217de06f3f2507607068"
+    }
+  },
+  "limiares": [
+    3,
+    4,
+    5,
+    6,
+    8
+  ],
+  "resolucao_graus": [
+    8.983152841195215e-05,
+    8.983152841195215e-05
+  ],
+  "nota": "precisao_maxima_aprox conta cada pixel falso como uma detecção; agrupar pixels em objetos reduz um pouco o número de falsos",
+  "python": "3.13.18",
+  "numpy": "2.5.3",
+  "pandas": "3.0.5"
+}

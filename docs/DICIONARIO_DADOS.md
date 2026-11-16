@@ -133,3 +133,22 @@ roxo), `a` (amarelo), `o` (outra); `?` = incerto; `+` = grupo. Ver
 | `precisao_validacao.csv`, `respostas_validacao.csv` | 2 | Precisão e taxa de flor nos controles |
 | `censo_sensibilidade_precisao.csv` | 3 | Por subparcela × índice: copas, detecções, sensibilidade, precisão |
 | `log_etapaN.json` | todas | Proveniência |
+
+## `data/release_v1/` (script 05)
+
+Conjunto de entrega: todos os registros rotulados (inspeção + censo). O
+dicionário completo está em [`data/release_v1/LEIAME.md`](../data/release_v1/LEIAME.md).
+
+## `data/censo/area_percorrida_AOI10_fragmento.geojson`
+
+Limite do fragmento efetivamente percorrido no censo da AOI10 (200 ha; contém
+a AOI10). Extraído de `data/raw/aois_poligonos_frag.geojson`.
+
+## `results/aoi_v1.1/` (script 06)
+
+| Arquivo | Conteúdo |
+|---|---|
+| `excedencia_pixels.csv` | Fração de pixels com z > limiar, evento × placebo, na AOI10 e no fragmento fora dela |
+| `deteccao_copas_censo.csv` | Fração das copas do censo (calibração × teste) com z > limiar, evento × placebo |
+| `balanco_fragmento.csv` | Pixels falsos esperados × copas detectadas × precisão máxima aproximada, por limiar |
+| `log_analise_fragmento.json` | Proveniência |

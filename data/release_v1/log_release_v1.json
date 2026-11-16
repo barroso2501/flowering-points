@@ -1,0 +1,121 @@
+{
+  "versao_script": "1.0",
+  "entradas": {
+    "eventos": {
+      "caminho": "data/processed/ipes_eventos_consolidados.csv",
+      "md5": "b93314c9eace47b9e0abb988ac98bd74"
+    },
+    "s2_input": {
+      "caminho": "data/processed/ipes_eventos_s2_input.csv",
+      "md5": "be871cca28610115b376cb3ebf5a7f4f"
+    },
+    "det_v11": {
+      "caminho": "results/v1.1/detectabilidade_por_evento.csv",
+      "md5": "4feed5490787da21899909481a102944"
+    },
+    "censo": {
+      "caminho": "data/censo/censo_v1.kml",
+      "md5": "a156895d315d6b3d3a35d49f00340ba1"
+    },
+    "registro_censo": {
+      "caminho": "data/censo/censo_v1_registro.csv",
+      "md5": "c716feb8e096f6f2bac4fbdd4dd4cf51"
+    },
+    "subparcelas": {
+      "caminho": "data/aoi/subparcelas_censo_v1.kml",
+      "md5": "fad4d0ba8713a0ae66b76b6afa65a682"
+    },
+    "fragmento": {
+      "caminho": "data/censo/area_percorrida_AOI10_fragmento.geojson",
+      "md5": "981ac728a4ca217de06f3f2507607068"
+    },
+    "aois": {
+      "caminho": "data/aoi/aois_v1.geojson",
+      "md5": "bbe4419582aa2dd63f8eefbfa7088cc2"
+    }
+  },
+  "rasters_usados": [
+    "data/gee_exports/aoi_z_AOI10.tif",
+    "data/gee_exports/aoi_z_AOI12.tif"
+  ],
+  "n_registros": 745,
+  "n_copas": 737,
+  "n_possiveis_duplicatas": 14,
+  "resumo": [
+    {
+      "origem": "censo_exaustivo",
+      "cor": "amarelo",
+      "certeza": "certa",
+      "n": 146
+    },
+    {
+      "origem": "censo_exaustivo",
+      "cor": "amarelo",
+      "certeza": "incerta",
+      "n": 27
+    },
+    {
+      "origem": "censo_exaustivo",
+      "cor": "outra",
+      "certeza": "certa",
+      "n": 1
+    },
+    {
+      "origem": "censo_exaustivo",
+      "cor": "rosa",
+      "certeza": "certa",
+      "n": 63
+    },
+    {
+      "origem": "censo_exaustivo",
+      "cor": "rosa",
+      "certeza": "incerta",
+      "n": 10
+    },
+    {
+      "origem": "inspecao_oportunista",
+      "cor": "amarelo",
+      "certeza": "alta",
+      "n": 172
+    },
+    {
+      "origem": "inspecao_oportunista",
+      "cor": "amarelo",
+      "certeza": "baixa",
+      "n": 3
+    },
+    {
+      "origem": "inspecao_oportunista",
+      "cor": "amarelo",
+      "certeza": "media",
+      "n": 7
+    },
+    {
+      "origem": "inspecao_oportunista",
+      "cor": "rosa",
+      "certeza": "alta",
+      "n": 302
+    },
+    {
+      "origem": "inspecao_oportunista",
+      "cor": "rosa",
+      "certeza": "media",
+      "n": 5
+    },
+    {
+      "origem": "inspecao_oportunista",
+      "cor": "roxo",
+      "certeza": "media",
+      "n": 8
+    },
+    {
+      "origem": "inspecao_oportunista",
+      "cor": "sucupira",
+      "certeza": "baixa",
+      "n": 1
+    }
+  ],
+  "python": "3.13.18",
+  "pandas": "3.0.5",
+  "geopandas": "1.2.0"
+}

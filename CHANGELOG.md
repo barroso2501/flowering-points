@@ -1,5 +1,36 @@
 # Changelog
 
+## v2.0: congelamento (2026-11-16)
+
+- **Projeto congelado** e preparado para outros interessados.
+- **Dados:**
+  - `data/release_v1/`: todos os registros rotulados (745: 498 da inspeção e
+    247 do censo) em CSV, GeoJSON e GeoPackage, com `LEIAME.md`;
+  - `data/censo/area_percorrida_AOI10_fragmento.geojson`;
+  - `data/raw/aois_poligonos_frag.geojson`.
+- **Scripts:**
+  - `05_consolidar_rotulos.py` (gera o conjunto de entrega);
+  - `06_analise_fragmento.py` (por que a varredura cega falha).
+- **Resultados:** `results/aoi_v1.1/`; `docs/RESULTADOS_aoi_v1.1.md`.
+- **Docs:**
+  - `GUIA_INTERESSADOS.md`;
+  - `DECISOES` (D12 atualizada, D13, tabela de estado no congelamento);
+  - README reescrito;
+  - `METODOS` §6;
+  - `DICIONARIO_DADOS`.
+- **Outros:**
+  - `CITATION.cff` (licença a definir);
+  - `MANIFEST.sha256`;
+  - `requirements.txt` + geopandas e rasterio.
+
+## v1.3.1 (2026-11-16)
+
+- **`data/censo/censo_v1_registro.csv`:**
+  - tempos de borda e matriz corrigidos (estavam trocados);
+  - `n_copas` preenchido;
+  - observações sobre o censo da AOI10 estendido ao fragmento inteiro.
+- **`docs/RESULTADOS_aoi_v1.md`:** tabela do censo e pendências atualizadas.
+
 ## v1.3 (2026-11-16)
 
 - **Dados:**

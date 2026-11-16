@@ -214,7 +214,20 @@ A mesma lógica do script 02 v1.1, aplicada a cada pixel:
 - **Distância de casamento:** os 20 m entre o censo e a detecção são uma escolha
   (erro de posição do GE mais o tamanho do pixel); não foram calibrados.
 
-## 6. Parâmetros
+## 6. Consolidação dos rótulos e análise do fragmento (scripts 05 e 06)
+
+- **Script 05:** junta os registros da inspeção (com o z_pico da v1.1) e do
+  censo (com o z por pixel, quando há raster).
+  - Marca como possível duplicata a copa do censo a ≤ 20 m de um ponto da
+    inspeção com a mesma data e cor.
+  - Grava CSV, GeoJSON e GeoPackage em `data/release_v1/`.
+- **Script 06:**
+  - na AOI10 e no fragmento fora dela, compara a fração de pixels acima de cada
+    limiar no evento e no placebo;
+  - mede o z (máximo na janela 3×3) nas copas do censo;
+  - estima o balanço de pixels falsos × copas detectadas no fragmento.
+
+## 7. Parâmetros
 
 | Parâmetro | Valor v1 | Onde |
 |---|---|---|
